@@ -3,6 +3,8 @@
 <body>
   <canvas id="canvasField" width="700" height="500" style="border:1px solid"></canvas><br>
 <button onclick="fillCanvas()">Fill canvas</button>
+<input type="number" id="input" value="1000">
+<button onclick="genPar()">Add object</button>
 <button onclick="clearCanvas()">Clear canvas</button><br>
 <p id="posX">posX</p>
   <p id="posY">posX</p>
@@ -11,6 +13,8 @@
         <p id="draw">Nupiešti kvadratai</p>
           <p id="gen">Sugeneruoti kvadratai</p>
 <script>
+//Iš esmės didžioji dalis kodo yra paimta iš advanced_exercices_3.html failo.
+//Pridėta atsitiktinės spalvos funkcija, automatinio užpildymo funkcija ir parametrų rodymo funkcija.
 var Memory = [
   {posX:700, posY:500, sizeX:0, sizeY:0}
 ];
@@ -23,20 +27,33 @@ function rectangle(posX,posY,sizeX,sizeY){
   var image = document.getElementById("canvasField");
   var rect = image.getContext("2d");
   rect.beginPath();
-  rect.moveTo(posX, posY);
-  rect.lineTo(sizeX+posX,posY);
+  rect.moveTo(posX, posY);  //čia nustatoma braižomo objekto pradinis taškas
+  rect.lineTo(sizeX+posX,posY); //čia braižomas objektas ekrane su lineTo komanda.
   rect.lineTo(sizeX+posX,sizeY+posY);
   rect.lineTo(posX,posY+sizeY);
   rect.lineTo(posX,posY);
+  rect.fillStyle = rndColor();  //iš funkcijos rndColor()
+  rect.fill();
   rect.stroke();
+}
+
+function rndColor(){
+  var symbols = '0123456789ABCDEF';   //string: 16-ainė sistemą sudarančios raidės
+  var colorCode = '#';
+  for (var i = 0; i < 8; i++) {  //generuoja 16-ainį atsitiktinį kodą sudarytą iš 8 16-ainių simbolių.
+   colorCode += symbols[Math.floor(Math.random() * 16)];  //8 bitai leidžia sukurti pastelines spalvas
+ }
+ return colorCode;  //grąžina 8bit spalvos kodą
 }
 
 function genPar(){
   var posX = Math.floor(Math.random() * 700);
   var posY = Math.floor(Math.random() * 500);
-  var sizeX = Math.floor((Math.random() * 100)+1);
-  var sizeY = Math.floor((Math.random() * 100)+1);
+  var sizeX = Math.floor((Math.random() * 100)+10);
+  var sizeY = Math.floor((Math.random() * sizeX)+sizeX/2);
  gen++;
+ document.getElementById("draw").innerHTML = draw;
+ document.getElementById("gen").innerHTML = gen;
 check(posX,posY,sizeX,sizeY);
 }
 
@@ -47,22 +64,21 @@ for (i = 0;i<Memory.length;i++){
 if ((posX >= Memory[i].posX) && (posX < (Memory[i].posX + Memory[i].sizeX)) && (posY >= Memory[i].posY) && (posY < (Memory[i].posY + Memory[i].sizeY)))return genPar();
 }
 
-for (i = 0;i<Memory.length;i++){
+for (i = 0;i<Memory.length;i++){ //čia tikrinama, kad nesikirstų stačiakampiai su anksčiau nubraižytais stačiakampiais.
 if (posX + sizeX > Memory[i].posX && posX < Memory[i].posX + Memory[i].sizeX && posY + sizeY > Memory[i].posY && posY  < Memory[i].posY + Memory[i].sizeY) return genPar();
 }
 
-
-var object = {};
+var object = {};//išsaugomi objekto parametrai masyve
 object["posX"] = posX;
 object["posY"] = posY;
 object["sizeX"] = sizeX;
 object["sizeY"] = sizeY;
 Memory.push(object);
 for (i = 0; i < Memory.length;i++){
-document.getElementById("posX").innerHTML = posX;//Memory[i].posX;
-document.getElementById("posY").innerHTML = posY;//Memory[i].posY;
-document.getElementById("sizeX").innerHTML = sizeX;//Memory[i].sizeX;
-document.getElementById("sizeY").innerHTML = sizeY;//Memory[i].sizeY;
+document.getElementById("posX").innerHTML = posX; //čia išvedami į ekraną paskutinio objekto parametrai
+document.getElementById("posY").innerHTML = posY;
+document.getElementById("sizeX").innerHTML = sizeX;
+document.getElementById("sizeY").innerHTML = sizeY;
 }
   rectangle(posX,posY,sizeX,sizeY);
   draw++;
@@ -70,18 +86,27 @@ document.getElementById("sizeY").innerHTML = sizeY;//Memory[i].sizeY;
 
 function clearCanvas(){
   var canvas = canvasField.getContext("2d");
-  canvas.clearRect(0,0,700,500);
-while(Memory.length > 1){
+  canvas.clearRect(0,0,700,500);  //ištrinami nubraižyti objektai.
+while(Memory.length > 1){ //ištrinami objektų duomenys iš masyvo.
   Memory.pop();
+  draw = 0;  //draw ir gen parametrai nunulinami.
+  gen = 0;
+  document.getElementById("draw").innerHTML = draw;
+  document.getElementById("gen").innerHTML = gen;
 }
 }
 
 function fillCanvas(){
-  for(i = 0;i < 500;i++)genPar();
+  var quantity = document.getElementById("input").value;
+  for(i = 0;i < quantity;i++)genPar();
   document.getElementById("draw").innerHTML = draw;
   document.getElementById("gen").innerHTML = gen;
+  // indikatoriai draw ir gen rodo kiek reikia sugeneruoti objektų(gen),
+  // kad būtų nubraižytas reikiamas skaičius objektų ant drobės (draw).
 }
 
+//Nustačius objektų skaičių daugiau nei 1000 yra jaučiamas ilgas generavimo laikas. Tikriausiai tai yra dėl neefektyvaus algoritmo,
+//kuris objektų tinkrinimo funkcijoje check() objektus nepataiso, o išmeta ir kviečia naują objekto generavimą per genPar() funkciją.
 
 
 </script>

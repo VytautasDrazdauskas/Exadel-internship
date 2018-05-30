@@ -27,8 +27,8 @@ function rectangle(posX,posY,sizeX,sizeY){  //šioje funkcijoje generuojami sta�
 function genPar(){  //šioje funkcijoje generuojami parametrai, kurie naudojami braižyti kvadratus
   var posX = Math.floor(Math.random() * 700);
   var posY = Math.floor(Math.random() * 500);
-  var sizeX = Math.floor((Math.random() * 100)+1);
-  var sizeY = Math.floor((Math.random() * 100)+1);  //čia reiškia kad max ilgis Y ašyje yra 100, o min yra 1
+  var sizeX = Math.floor((Math.random() * 100)+1);//čia reiškia kad max ilgis Y ašyje yra 100, o min yra 1
+  var sizeY = Math.floor((Math.random() * sizeX)+sizeX/3);  //čia mažiausią reikšmę ir didžiausią prilyginam sizeX, tam kad kvadratai išlaikytų atpažįstamas proporcijas.
 
 //prieš nubraižant kvadratus ant drobės (canvas) reikia patikrinti, ar jie atitinka reikalavimus. Tam sukurta tikrinimo funkcija.
 
