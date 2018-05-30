@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <input type="text" id="textField" value="exercice">
+<script>
+
+
+
+function reverseInput(){
+var string = document.getElementById("textField").value; //žodis nuskaitomas iš įvesties lauko
+var array = string.split("");  //žodis sukarpomas į char simbolius ir sukuriamas masyvas
+var reversedArray= array.reverse(); //apsukamas masyvas
+var reversedWord = reversedArray.join("");
+ //masyvas konvertuojamas į string'ą
+ document.getElementById("result").innerHTML = reversedWord;
+}
+
+/*kitas būdas yra sukurti masyvą iš string panaudojant split() funkciją.
+tuomet sukuriamas char'ų masyvas. Su .length komanda sužinome masyvo ilgį.
+Kadangi masyvas identifikuojamas nuo nulio, iš .length reikia atimti vienetą,
+taip gaunant paskutinio masyvo elemento indeksą.
+Paleidžiamas for loop'as pradedant nuo pradžios iki galo.Sukuriamas naujas
+masyvas,kuriame bus talpinamas atsakymas. Su kiekviena iteracija char shimbolis
+nukopijuojamas į naują masyvą su push() komanda. Pasibaigus loop'ui, masyvas
+konvertuojamas į string su join() komanda. Gautas string'as yra norimas atsakymas.
+*/
+</script>
+
+    <button onclick="reverseInput()">Reverse</button>
+<p id="result">Result</p>
+</body>
+</html>

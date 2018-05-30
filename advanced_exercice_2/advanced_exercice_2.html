@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <p id="dog">Dog array here</p>
+  <p id="cat">Cat array here</p>
+  <button onclick="conversion()">Click here</p>
+<script>
+var inputArray = [  //duomenys, su kuriais bus dirbama
+	{id: 1, name: "dog", parentId: null},
+	{id: 2, name: "Buddy", parentId: 1},
+	{id: 3, name: "Daisy", parentId: 1},
+	{id: 4, name: "cat", parentId: null},
+	{id: 5, name: "Smokey", parentId: 4},
+	{id: 6, name: "Oscar", parentId: 4}
+]
+
+function conversion(){  //konvertavimo funkcija
+  var length = inputArray.length;  //nustatoma, kiek elementų yra masyve "inputArray"
+  for (i=0;i<length;i++){
+    if (inputArray[i].parentId == null) var inputArray[i].name = [];  //jei parentId yra null, reikia kurti naują masyvą
+    else { //jei parentId nelygus null, tai reikia objektą priskirti kitam masyvui.
+      var k = 0;
+      if (inputArray[i].parentId == inputArray[k].id){ //tikrinama kam pagal parentId priklauso objektas
+        var desiredArr = inputArray[i].name; //nustatomas masyvo vardas
+        desiredArr.push(inputArray[i].name);  //objektas įterpiamas į nurodytą masyvą
+      } else i++;  //jei nerastas objektas, pereinama prie kito objekto
+    }
+  }
+}
+
+document.getElementById("dog").innerHTML = dog;
+document.getElementById("cat").innerHTML = cat;
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <input type="string" id="Name" placeholder="Input the name"><p>
+  <input type="string" id="Place" placeholder="Input where to go"><p>
+  <input type="string" id="Goods" placeholder="Input what to buy"><p>
+  <button onclick="wordChain()">Click me</button>
+  <p id="result"></p>
+<script>
+
+
+
+function wordChain(){
+  var human = {   //sukuria objektą pavadinimu "human"
+    name:document.getElementById("Name").value,  //importuoja įvesties vertę į objekto savybes
+    go:document.getElementById("Place").value,
+    buy:document.getElementById("Goods").value
+  }
+
+  var string = human.name + " goes to " + human.go + " to buy " + human.buy; //sudaroma žodžių grandinė
+    document.getElementById("result").innerHTML = string; //išvedimas
+}
+
+//Kitas būdas tai padaryti yra vietoje objekto naudoti paprastus string kintamuosius.
+//Tokiu atveju žodžių grandinėje bus nurodomi ne objektai su savybėmis, o kintamųjų vardai.
+</script>
+</body>
+</html>

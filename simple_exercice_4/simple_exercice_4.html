@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<script>
+function time(){
+
+var fullDate = Date(); //naudojam indexOf funkcija pirma randant funkcijoje Date() pirmo dvitaškio vietą
+var pos = fullDate.indexOf(":");
+var begin = pos - 2;  //nustatome datos pradžios poziciją
+var end = pos + 6;  //pabaiga
+var res = fullDate.slice(begin, end);  //slice komanda iškerpa atkarpą
+document.getElementById("clock").innerHTML=res;
+var t = setTimeout(time, 100);
+//naujinam laiką kas 100ms, nes 1000ms ne visada yra sinchronizuotas
+// su laikrodžiu.
+
+}
+
+/* kitu būdų būtų galima atvaizduoti su getHour(), getMinute() ir getSeconds(),
+ tačiau, jei laikas būtų 09:16:04 tai šios funkcijos grąžintų 9:16:4. Formatui pataisyti
+ reikėtų kurti naują funkciją, kuri prideda nulį, jei skaičius yra mažesnis už 10.
+ */
+
+/*function date(){
+  var time = new Date();
+  var hour = time.getHour();
+  var minute = time.getMinutes();
+  var second = time.getSeconds();
+  hour = checkDate(hour);
+  minute = checkDate(minute);
+  second = checkDate(second);
+  document.getElementById("clock").innerHTML = (hour + ":" + minute + ":" + second);
+ var t = setTimeout(date, 500);
+}
+
+  function checkDate(i){
+    if (i < 10) i = "0" + i;
+    return i;
+    */
+
+
+</script>
+
+<body onload="time()">
+<p id="clock"></p>
+</body>
+</html>

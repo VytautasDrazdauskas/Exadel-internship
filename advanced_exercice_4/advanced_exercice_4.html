@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <canvas id="canvasField" width="700" height="500" style="border:1px solid"></canvas><br>
+<button onclick="fillCanvas()">Fill canvas</button>
+<button onclick="clearCanvas()">Clear canvas</button><br>
+<p id="posX">posX</p>
+  <p id="posY">posX</p>
+    <p id="sizeX">posX</p>
+      <p id="sizeY">posX</p>
+        <p id="draw">Nupiešti kvadratai</p>
+          <p id="gen">Sugeneruoti kvadratai</p>
+<script>
+var Memory = [
+  {posX:700, posY:500, sizeX:0, sizeY:0}
+];
+
+var gen = 0;
+var draw = 0;
+
+
+function rectangle(posX,posY,sizeX,sizeY){
+  var image = document.getElementById("canvasField");
+  var rect = image.getContext("2d");
+  rect.beginPath();
+  rect.moveTo(posX, posY);
+  rect.lineTo(sizeX+posX,posY);
+  rect.lineTo(sizeX+posX,sizeY+posY);
+  rect.lineTo(posX,posY+sizeY);
+  rect.lineTo(posX,posY);
+  rect.stroke();
+}
+
+function genPar(){
+  var posX = Math.floor(Math.random() * 700);
+  var posY = Math.floor(Math.random() * 500);
+  var sizeX = Math.floor((Math.random() * 100)+1);
+  var sizeY = Math.floor((Math.random() * 100)+1);
+ gen++;
+check(posX,posY,sizeX,sizeY);
+}
+
+function check(posX,posY,sizeX,sizeY){
+if (((sizeX + posX) > 699) || ((sizeY + posY) > 499)) return genPar();
+
+for (i = 0;i<Memory.length;i++){
+if ((posX >= Memory[i].posX) && (posX < (Memory[i].posX + Memory[i].sizeX)) && (posY >= Memory[i].posY) && (posY < (Memory[i].posY + Memory[i].sizeY)))return genPar();
+}
+
+for (i = 0;i<Memory.length;i++){
+if (posX + sizeX > Memory[i].posX && posX < Memory[i].posX + Memory[i].sizeX && posY + sizeY > Memory[i].posY && posY  < Memory[i].posY + Memory[i].sizeY) return genPar();
+}
+
+
+var object = {};
+object["posX"] = posX;
+object["posY"] = posY;
+object["sizeX"] = sizeX;
+object["sizeY"] = sizeY;
+Memory.push(object);
+for (i = 0; i < Memory.length;i++){
+document.getElementById("posX").innerHTML = posX;//Memory[i].posX;
+document.getElementById("posY").innerHTML = posY;//Memory[i].posY;
+document.getElementById("sizeX").innerHTML = sizeX;//Memory[i].sizeX;
+document.getElementById("sizeY").innerHTML = sizeY;//Memory[i].sizeY;
+}
+  rectangle(posX,posY,sizeX,sizeY);
+  draw++;
+}
+
+function clearCanvas(){
+  var canvas = canvasField.getContext("2d");
+  canvas.clearRect(0,0,700,500);
+while(Memory.length > 1){
+  Memory.pop();
+}
+}
+
+function fillCanvas(){
+  for(i = 0;i < 500;i++)genPar();
+  document.getElementById("draw").innerHTML = draw;
+  document.getElementById("gen").innerHTML = gen;
+}
+
+
+
+</script>
+</body>
+</html>

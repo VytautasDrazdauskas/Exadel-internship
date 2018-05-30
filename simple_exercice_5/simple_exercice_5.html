@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <p> Input number array. Seperate numbers with commas:</p>
+  <input id="numberField" type="string" value="10,20,30,40,50">
+  <button onclick=arraySum()>Press me</button>
+  <p id="test">Input array</p>
+<script>
+
+function arraySum(){
+  var number = document.getElementById("numberField").value; //nuskaitoma įvestis
+  var numArr = number.split(",");  //stringas padalijamas ten, kur yra kableliai. Formuojamas masyvas
+  var length = numArr.length;  //string masyvų ilgis
+  document .getElementById("test").innerHTML = numArr;  //išvedamas į ekraną stringų masyvas
+  var sum = 0;
+  for (i = 0; i < length; i++){
+  sum = sum + Number(numArr[i]);  //skaičiuojama masyvo suma tuo pačiu konvertuojant string į number
+  }
+  document.getElementById("result").innerHTML = sum;
+}
+  //Taip pat galima uždavinį išspręsti įvedant number įvestį ir po vieną ,su push komanda,
+  //sukonstruoti skaičių masyvą.
+</script>
+
+<p id="result">Result here</p>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <canvas id="canvasField" width="700" height="500" style="border:1px solid"></canvas><br>
+<button onclick="genPar()">Generate!</button>
+<button onclick="clearCanvas()">Clear canvas</button><br>
+<script>
+var Memory = [
+  {posX:700, posY:500, sizeX:0, sizeY:0}  //čia talpinama informacija apie anksčiau nupieštus stačiakampius
+];  // čia žymimos koordinatės: posX ir posY yra pradinio taško koordinatės.
+//sizeX ir sizeY yra stačiakampių matmenys atitinkamose ašyse.
+
+
+
+function rectangle(posX,posY,sizeX,sizeY){  //šioje funkcijoje generuojami stačiakampiai
+  var image = document.getElementById("canvasField");
+  var rect = image.getContext("2d");
+  rect.beginPath();
+  rect.moveTo(posX, posY);
+  rect.lineTo(sizeX+posX,posY);
+  rect.lineTo(sizeX+posX,sizeY+posY);
+  rect.lineTo(posX,posY+sizeY);
+  rect.lineTo(posX,posY);
+  rect.stroke();
+}
+
+function genPar(){  //šioje funkcijoje generuojami parametrai, kurie naudojami braižyti kvadratus
+  var posX = Math.floor(Math.random() * 700);
+  var posY = Math.floor(Math.random() * 500);
+  var sizeX = Math.floor((Math.random() * 100)+1);
+  var sizeY = Math.floor((Math.random() * 100)+1);  //čia reiškia kad max ilgis Y ašyje yra 100, o min yra 1
+
+//prieš nubraižant kvadratus ant drobės (canvas) reikia patikrinti, ar jie atitinka reikalavimus. Tam sukurta tikrinimo funkcija.
+
+check(posX,posY,sizeX,sizeY);
+}  //didžiausias šios funkcijos minusas yra tai, kad jeigu kažkoks parametras neatitinka reikalavimų, grįžtama prie generavimo.
+//Tokiu būdu yra sukuriama labai daug šiukšlių ir jų kiekis spartėjančiai kyla didėjant jau nubraižytų stačiakampių skaičiui.
+// pavyzdžiui nubraižyti 500 stačiakampių reikia sugeneruoti maždaug 26 000 stačiakampių, iš kurių 25 500 bus netinkami.
+function check(posX,posY,sizeX,sizeY){  //čia tikrinama ar stačiakampiai neišeina už drobės (canvas) ribų.
+if (((sizeX + posX) > 699) || ((sizeY + posY) > 499)) return genPar();
+
+for (i = 0;i<Memory.length;i++){  //čia tikrinama, kad pradinė koordinatė neatsidurtų kokio nors kvadrato viduje.
+if ((posX >= Memory[i].posX) && (posX < (Memory[i].posX + Memory[i].sizeX)) && (posY >= Memory[i].posY) && (posY < (Memory[i].posY + Memory[i].sizeY)))return genPar();
+}
+
+for (i = 0;i<Memory.length;i++){ //čia tikrinama, kad nesikirstų stačiakampiai su anksčiau nubraižytais stačiakampiais.
+if (posX + sizeX > Memory[i].posX && posX < Memory[i].posX + Memory[i].sizeX && posY + sizeY > Memory[i].posY && posY  < Memory[i].posY + Memory[i].sizeY) return genPar();
+}
+
+
+var object = {}; //čia sukuriamas objektas apie reikalavimus atitinkantį stačiakampį ir nusiunčiama masyvui (array) "Memory".
+object["posX"] = posX;
+object["posY"] = posY;
+object["sizeX"] = sizeX;
+object["sizeY"] = sizeY;
+Memory.push(object);
+
+  rectangle(posX,posY,sizeX,sizeY);
+}
+
+function clearCanvas(){  //čia drobė (canvas) ištrinama.
+  var canvas = canvasField.getContext("2d");
+  canvas.clearRect(0,0,700,500);
+while(Memory.length > 1){  //čia ištrinami objektai iš masyvo.
+  Memory.pop();
+}
+}
+
+// Galvojau apie tai, kaip išrūšiuoti stačiakampius būtų tikrinimo metu užduoti komandą ir pakeisti kurį nors parametrą ir jį nubraižyti.
+// Tačiau toks būdo realizavimas sudėtingas tuomet, kai susidaro daug stačiakampių, ir reikia atsižvelgti į kiekvieną anksčiau nubraižytą objektą.
+
+
+</script>
+</body>
+</html>
